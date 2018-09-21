@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import com.orm.SugarRecord
 import com.spoonart.training.R
+import com.spoonart.training.feature.session_five.DetailActivity
 import com.spoonart.training.feature.session_four.AddItemActivity
 import com.spoonart.training.model.data.Recipe
 import com.spoonart.training.util.DataUtil
@@ -18,7 +19,7 @@ import com.spoonart.training.util.DataUtil
 class ListActivity : AppCompatActivity() {
 
     var recyclerView: RecyclerView? = null
-    var adapter: RecipeAdapter? = null
+    lateinit var adapter: RecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +70,14 @@ class ListActivity : AppCompatActivity() {
     }
 
     fun setAdapter(items: MutableList<Recipe>) {
-        val adapter = RecipeAdapter(items)
+        adapter = RecipeAdapter(items)
         adapter.listener = object : RecipeAdapter.RecipeClickListener {
             override fun onClick(itemView: View, data: Recipe, position: Int) {
-
+                DetailActivity.start(this@ListActivity, data)
             }
         }
         recyclerView!!.adapter = adapter
     }
 
 }
+

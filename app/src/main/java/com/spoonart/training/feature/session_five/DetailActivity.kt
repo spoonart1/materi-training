@@ -1,6 +1,8 @@
 package com.spoonart.training.feature.session_five
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -19,6 +21,16 @@ class DetailActivity : AppCompatActivity() {
     var tvIngredients: TextView? = null
     var ivThumbnail: ImageView? = null
     var recipe: Recipe? = null
+
+    companion object {
+
+        fun start(from: Context, parcel: Recipe) {
+            val intent = Intent(from, DetailActivity::class.java)
+            intent.putExtra("parcel", parcel)
+            from.startActivity(intent)
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

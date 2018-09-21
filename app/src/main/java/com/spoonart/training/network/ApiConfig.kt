@@ -70,7 +70,8 @@ internal class LoggingInterceptor : Interceptor {
 
         val t2 = System.nanoTime()
         println(String.format("Received response for %s in %.1fms%n%s",
-                response.request().url(), (t2 - t1) / 1e6, response.headers()))
+                response.request().url(), (t2 - t1) / 1e6, response.headers())
+        )
 
         return response
     }

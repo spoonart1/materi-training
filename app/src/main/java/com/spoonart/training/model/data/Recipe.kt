@@ -20,8 +20,7 @@ class Recipe() : Parcelable {
         this.ingredients = ingredients
     }
 
-    constructor(source: Parcel) : this(
-    )
+    constructor(source: Parcel) : this()
 
     override fun describeContents() = 0
 
