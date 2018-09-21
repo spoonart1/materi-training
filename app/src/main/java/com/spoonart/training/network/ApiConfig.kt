@@ -26,8 +26,11 @@ class ApiConfig {
     }
 
     private fun create(context: Context): ApiRequest {
+
         val loggingLevelIterceptor = HttpLoggingInterceptor()
-        loggingLevelIterceptor.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        loggingLevelIterceptor.level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                else HttpLoggingInterceptor.Level.NONE
 
         val okhttpBuilder = OkHttpClient().newBuilder()
 

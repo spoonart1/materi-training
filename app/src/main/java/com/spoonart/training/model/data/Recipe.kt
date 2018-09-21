@@ -8,12 +8,20 @@ import com.orm.dsl.Table
 
 @Table
 class Recipe() : Parcelable {
-    
     var title: String = ""
+
     var thumbnail: String = ""
+
     var ingredients: String = ""
 
-    constructor(source: Parcel) : this()
+    constructor(title: String, thumbnail: String, ingredients: String) : this() {
+        this.title = title
+        this.thumbnail = thumbnail
+        this.ingredients = ingredients
+    }
+
+    constructor(source: Parcel) : this(
+    )
 
     override fun describeContents() = 0
 
@@ -27,5 +35,28 @@ class Recipe() : Parcelable {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

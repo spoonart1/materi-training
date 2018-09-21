@@ -10,3 +10,4 @@ class BaseApplication : Application() {
         SugarContext.init(this)
     }
 }
+

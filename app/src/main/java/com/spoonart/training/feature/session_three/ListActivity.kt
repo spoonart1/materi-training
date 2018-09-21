@@ -31,7 +31,6 @@ class ListActivity : AppCompatActivity() {
         recyclerView?.let {
             it.layoutManager = LinearLayoutManager(this)
         }
-        setAdapter(DataUtil.dummyData())
     }
 
     override fun onResume() {
@@ -40,8 +39,33 @@ class ListActivity : AppCompatActivity() {
     }
 
     fun loadData() {
-        val items = DataUtil.dummyData()
-        setAdapter(items)
+        setAdapter(DataUtil.getRecipeFromLocal())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater?.inflate(R.menu.menu_list, menu)
+
+//        val searchView = menu?.findItem(R.id.mn_search)!!.actionView as SearchView
+//        searchView.setOnQueryTextFocusChangeListener({ view, hasOFocus ->
+//            if (hasOFocus) {
+//                adapter?.filter?.filter(searchView.query)
+//            }
+//        })
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.itemId) {
+            R.id.mn_add -> {
+                startActivity(
+                        Intent(this, AddItemActivity::class.java)
+                )
+            }
+        }
+
+        return false
     }
 
     fun setAdapter(items: MutableList<Recipe>) {
@@ -52,30 +76,6 @@ class ListActivity : AppCompatActivity() {
             }
         }
         recyclerView!!.adapter = adapter
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater?.inflate(R.menu.menu_list, menu)
-
-        val searchView = menu?.findItem(R.id.mn_search)!!.actionView as SearchView
-        searchView.setOnQueryTextFocusChangeListener({ view, hasOFocus ->
-            if (hasOFocus) {
-                adapter?.filter?.filter(searchView.query)
-            }
-        })
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
-        when (item?.itemId) {
-            R.id.mn_add -> {
-                startActivity(Intent(this, AddItemActivity::class.java))
-            }
-        }
-
-        return false
     }
 
 }

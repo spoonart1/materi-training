@@ -15,8 +15,7 @@ class DataUtil {
             SugarRecord.save(recipe)
         }
 
-
-        fun dummyData() : MutableList<Recipe>{
+        fun dummyData(): MutableList<Recipe> {
             return mutableListOf(
                     Recipe("Soup", "https://www.cookingclassy.com/wp-content/uploads/2014/10/vegetable-soup3-edit-srgb.-480x270.jpg", "carrot, potato, water, chicken"),
                     Recipe("Baked Omelet With Broccoli & Tomato", "http://img.recipepuppy.com/123889.jpg", "milk, cottage cheese, broccoli, cheddar cheese, basil, onion powder, eggs, garlic powder, roma tomato, salt"),
@@ -33,4 +32,3 @@ class DataUtil {
 
     }
 }
-

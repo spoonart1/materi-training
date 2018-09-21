@@ -21,12 +21,14 @@
 
         <!--<activity android:name=".feature.session_five.LoginActivity"/>-->
 
-        <activity android:name=".feature.session_two.OptionMenuActivity">
+        <activity android:name=".feature.session_three.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".feature.session_four.AddItemActivity"/>
 
     </application>
 

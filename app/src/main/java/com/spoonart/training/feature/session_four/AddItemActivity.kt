@@ -1,9 +1,9 @@
 package com.spoonart.training.feature.session_four
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import com.spoonart.training.R
@@ -20,7 +20,22 @@ class AddItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
+        setHomeAsUp()
         initView()
+    }
+
+    private fun setHomeAsUp(){
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return false
     }
 
     private fun initView() {
@@ -38,9 +53,10 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun saveData(){
-        val recipe = Recipe(etTitle!!.text.toString(),
-                etThumbnail!!.text.toString(),
-                etIngredients!!.text.toString())
+        val recipe = Recipe()
+        recipe.title = etTitle!!.text.toString()
+        recipe.thumbnail = etThumbnail!!.text.toString()
+        recipe.ingredients = etIngredients!!.text.toString()
         DataUtil.saveRecipe(recipe)
     }
 

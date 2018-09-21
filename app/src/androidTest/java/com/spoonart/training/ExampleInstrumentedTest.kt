@@ -22,3 +22,8 @@ class ExampleInstrumentedTest {
         assertEquals("com.spoonart.training", appContext.packageName)
     }
 }
+
+
+
+//repo: // https://github.com/spoonart1/materi-training.git
+//url : // https://github.com/spoonart1/materi-training
