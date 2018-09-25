@@ -8,7 +8,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import com.spoonart.training.R
-import com.spoonart.training.feature.session_five.LoginActivity
+import com.spoonart.training.feature.session_six.LoginActivity
 import com.spoonart.training.feature.session_four.AddItemActivity
 
 class MainNavigationActivity : AppCompatActivity() {

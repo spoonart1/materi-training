@@ -1,15 +1,14 @@
 package com.spoonart.training.feature.session_three
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.orm.SugarRecord
 import com.spoonart.training.R
 import com.spoonart.training.feature.session_five.DetailActivity
 import com.spoonart.training.feature.session_four.AddItemActivity
@@ -20,6 +19,16 @@ class ListActivity : AppCompatActivity() {
 
     var recyclerView: RecyclerView? = null
     lateinit var adapter: RecipeAdapter
+
+    companion object {
+        fun start(from: Context) {
+            from.startActivity(
+                    Intent(from, ListActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

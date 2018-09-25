@@ -20,7 +20,7 @@ class ApiConfig {
     companion object {
         val BASE_URL = "http://www.recipepuppy.com/api/"
 
-        fun getService(context: Context) : ApiRequest{
+        fun getService(context: Context): ApiRequest {
             return ApiConfig().create(context)
         }
     }

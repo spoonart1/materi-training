@@ -25,6 +25,4 @@ class MainActivity : AppCompatActivity() {
         tvTitle!!.text = title
     }
 
-
-
 }
