@@ -20,11 +20,15 @@ class Recipe() : Parcelable {
         this.ingredients = ingredients
     }
 
-    constructor(source: Parcel) : this()
+    constructor(source: Parcel) : this(source.readString(), source.readString(), source.readString())
 
     override fun describeContents() = 0
 
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {}
+    override fun writeToParcel(dest: Parcel, flags: Int){
+        dest.writeString(this.title)
+        dest.writeString(this.thumbnail)
+        dest.writeString(this.ingredients)
+    }
 
     companion object {
         @JvmField
@@ -34,28 +38,3 @@ class Recipe() : Parcelable {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

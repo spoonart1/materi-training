@@ -1,4 +1,4 @@
-package com.spoonart.training.feature.session_seven.fragment
+package com.spoonart.training.feature.session_nine.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +12,14 @@ import com.spoonart.training.model.data.Recipe
 
 class RecipeListFragment : Fragment() {
 
+    companion object {
+        fun newInstance(items: MutableList<Recipe>): RecipeListFragment {
+            val f = RecipeListFragment()
+            f.items = items
+            return f
+        }
+    }
+
     private var items = mutableListOf<Recipe>()
     private lateinit var recyclerView: RecyclerView
 
@@ -19,11 +27,12 @@ class RecipeListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recipe, container)
 
         recyclerView = view.findViewById(R.id.recyclerview)
+        setAdapter()
 
         return view
     }
 
-    fun setAdapter(){
+    fun setAdapter() {
         recyclerView.adapter = RecipeAdapter(items)
     }
 }

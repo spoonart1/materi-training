@@ -15,6 +15,10 @@ class DataUtil {
             SugarRecord.save(recipe)
         }
 
+        fun delete(recipe: Recipe) : Int{
+            return SugarRecord.deleteAll(Recipe::class.java, "title = ?", recipe.title)
+        }
+
         fun dummyData(): MutableList<Recipe> {
             return mutableListOf(
                     Recipe("Soup", "https://www.cookingclassy.com/wp-content/uploads/2014/10/vegetable-soup3-edit-srgb.-480x270.jpg", "carrot, potato, water, chicken"),

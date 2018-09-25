@@ -11,9 +11,9 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.orm.SugarRecord
 import com.spoonart.training.R
 import com.spoonart.training.model.data.Recipe
+import com.spoonart.training.util.DataUtil
 
 class DetailActivity : AppCompatActivity() {
 
@@ -24,19 +24,25 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
 
+        //a static method that will be called from previous activity / scene
         fun start(from: Context, parcel: Recipe) {
             val intent = Intent(from, DetailActivity::class.java)
             intent.putExtra("parcel", parcel)
             from.startActivity(intent)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        setHomeAsUp()
         initView()
         setData()
+    }
+
+    private fun setHomeAsUp(){
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initView() {
@@ -46,11 +52,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun setData() {
-        recipe = intent.getParcelableExtra<Recipe>("parcel")
+        recipe = intent.getParcelableExtra("parcel")
+        println("RECIPE: ${recipe!!.title}")
         recipe?.let {
             tvTitle!!.text = it.title
             tvIngredients!!.text = it.ingredients
             val url = it.thumbnail
+            setTitle(it.title)
         }
     }
 
@@ -64,14 +72,18 @@ class DetailActivity : AppCompatActivity() {
             R.id.mn_delete -> {
                 showDialogConfirmation()
             }
+            android.R.id.home -> {
+                onBackPressed()
+            }
         }
         return false
     }
 
+    //showing a pop up dialog as confirmation, before deleting the current record
     fun showDialogConfirmation() {
         AlertDialog.Builder(this)
                 .setTitle("Confirmation")
-                .setMessage("Are you sure want to delete Recipe?")
+                .setMessage("Are you sure want to delete this Recipe?")
                 .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
                         delete(recipe)
@@ -85,7 +97,8 @@ class DetailActivity : AppCompatActivity() {
         if (recipe == null)
             return
 
-        if (SugarRecord.delete(recipe)) {
+        //SugarRecord.delete(recipe)
+        if (DataUtil.delete(recipe) > 0) {
             finish()
         } else {
             Toast.makeText(this, "Gagal menghapus resep", Toast.LENGTH_SHORT).show()
