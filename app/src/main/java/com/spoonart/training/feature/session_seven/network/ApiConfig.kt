@@ -1,4 +1,4 @@
-package com.spoonart.training.network
+package com.spoonart.training.feature.session_seven.network
 
 import android.content.Context
 import com.google.gson.GsonBuilder
@@ -13,12 +13,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-//example API: http://www.recipepuppy.com/about/api/
-
 class ApiConfig {
 
     companion object {
-        val BASE_URL = "http://www.recipepuppy.com/api/"
+        val BASE_URL = "http://www.recipepuppy.com/"
 
         fun getService(context: Context): ApiRequest {
             return ApiConfig().create(context)

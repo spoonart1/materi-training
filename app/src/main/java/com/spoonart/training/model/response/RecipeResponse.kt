@@ -1,5 +1,11 @@
 package com.spoonart.training.model.response
 
-data class RecipeResponse(val title: String,
-                  val thumbnail: String,
-                  val ingredients: List<String>)
+import com.google.gson.annotations.SerializedName
+import com.spoonart.training.model.data.Recipe
+
+data class RecipeResponse(@SerializedName("title") val title: String,
+                          @SerializedName("version") val version: String,
+                          @SerializedName("href") val link: String,
+                          @SerializedName("results") val results: MutableList<Recipe> )
+
+

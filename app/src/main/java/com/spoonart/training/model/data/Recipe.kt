@@ -2,6 +2,7 @@ package com.spoonart.training.model.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import com.orm.dsl.Table
 
 //TODO : CREATE THIS CLASS AS PARCELABLE
@@ -9,9 +10,7 @@ import com.orm.dsl.Table
 @Table
 class Recipe() : Parcelable {
     var title: String = ""
-
     var thumbnail: String = ""
-
     var ingredients: String = ""
 
     constructor(title: String, thumbnail: String, ingredients: String) : this() {

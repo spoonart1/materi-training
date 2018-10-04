@@ -13,26 +13,24 @@ import com.spoonart.training.model.data.Recipe
 class RecipeListFragment : Fragment() {
 
     companion object {
-        fun newInstance(items: MutableList<Recipe>): RecipeListFragment {
+        fun newInstance(items: List<Recipe>): RecipeListFragment {
             val f = RecipeListFragment()
             f.items = items
             return f
         }
     }
 
-    private var items = mutableListOf<Recipe>()
+    private var items = listOf<Recipe>()
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_recipe, container)
-
         recyclerView = view.findViewById(R.id.recyclerview)
         setAdapter()
-
         return view
     }
 
     fun setAdapter() {
-        recyclerView.adapter = RecipeAdapter(items)
+        recyclerView.adapter = RecipeAdapter(items.toMutableList())
     }
 }

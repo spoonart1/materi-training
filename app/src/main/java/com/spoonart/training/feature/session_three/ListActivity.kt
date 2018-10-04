@@ -6,19 +6,26 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.spoonart.training.R
 import com.spoonart.training.feature.session_five.DetailActivity
-import com.spoonart.training.feature.session_four.AddItemActivity
+import com.spoonart.training.feature.session_seven.network.ApiConfig
+import com.spoonart.training.feature.session_seven.network.ApiRequest
 import com.spoonart.training.model.data.Recipe
-import com.spoonart.training.util.DataUtil
+import com.spoonart.training.model.response.RecipeResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ListActivity : AppCompatActivity() {
 
-    var recyclerView: RecyclerView? = null
-    lateinit var adapter: RecipeAdapter
+    private var recyclerView: RecyclerView? = null
+    private lateinit var adapter: RecipeAdapter
+
+    private val service: ApiRequest by lazy {
+        ApiConfig.getService(this)
+    }
 
     companion object {
         fun start(from: Context) {
@@ -41,41 +48,9 @@ class ListActivity : AppCompatActivity() {
         recyclerView?.let {
             it.layoutManager = LinearLayoutManager(this)
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        loadData()
-    }
-
-    fun loadData() {
-        setAdapter(DataUtil.getRecipeFromLocal())
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater?.inflate(R.menu.menu_list, menu)
-
-//        val searchView = menu?.findItem(R.id.mn_search)!!.actionView as SearchView
-//        searchView.setOnQueryTextFocusChangeListener({ view, hasOFocus ->
-//            if (hasOFocus) {
-//                adapter?.filter?.filter(searchView.query)
-//            }
-//        })
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
-        when (item?.itemId) {
-            R.id.mn_add -> {
-                startActivity(
-                        Intent(this, AddItemActivity::class.java)
-                )
-            }
-        }
-
-        return false
+        //load first time
+        requestDataByDefault()
     }
 
     fun setAdapter(items: MutableList<Recipe>) {
@@ -88,5 +63,55 @@ class ListActivity : AppCompatActivity() {
         recyclerView!!.adapter = adapter
     }
 
+    fun requestDataBy(ingredients: String?, food: String?, page: Int?) {
+        val request = service.getRecipesBy(ingredients, food, page)
+        request.enqueue(object : Callback<RecipeResponse> {
+
+            override fun onFailure(call: Call<RecipeResponse>?, t: Throwable?) {
+                t?.printStackTrace()
+            }
+
+            override fun onResponse(call: Call<RecipeResponse>?, response: Response<RecipeResponse>?) {
+                response?.let {
+                    if (it.code() == 200) {
+                        it.body()?.let { result ->
+                            setAdapter(result.results)
+                        }
+                    } else {
+                        Toast.makeText(this@ListActivity,
+                                "An error occured", Toast.LENGTH_LONG)
+                                .show()
+                    }
+                }
+            }
+        })
+    }
+
+    fun requestDataByDefault() {
+        requestDataBy(null, null, null)
+    }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater?.inflate(R.menu.menu_list, menu)
+//
+//        val searchView = menu?.findItem(R.id.mn_search)!!.actionView as SearchView
+//        searchView.setOnQueryTextFocusChangeListener({ view, hasOFocus ->
+//            if (hasOFocus) {
+//                //adapter?.filter?.filter(searchView.query)
+//            }
+//        })
+//
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        when (item?.itemId) {
+//            R.id.mn_add -> {
+//                requestDataByDefault()
+//            }
+//        }
+//
+//        return false
+//    }
 }
 

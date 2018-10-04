@@ -6,8 +6,4 @@ public class Supermassive {
 
     }
 
-    public void hello(){
-
-    }
-
 }

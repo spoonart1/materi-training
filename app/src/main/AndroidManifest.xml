@@ -12,23 +12,29 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name=".feature.session_six.SplashActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity android:name=".feature.session_five.LoginActivity"/>-->
 
-        <activity android:name=".feature.session_three.ListActivity">
+        <activity
+            android:name=".feature.session_three.ListActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".feature.session_four.AddItemActivity"/>
-        <activity android:name=".feature.session_five.DetailActivity"/>
+        <activity
+            android:name=".feature.session_four.AddItemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.session_five.DetailActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
