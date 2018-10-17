@@ -9,8 +9,11 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.Gravity
+import android.view.MenuItem
 import android.widget.Toast
 import com.spoonart.training.R
 import com.spoonart.training.feature.session_four.AddItemActivity
@@ -29,6 +32,7 @@ class MainNavigationActivity : AppCompatActivity() {
     private var mTabLayout: TabLayout? = null
     private var mDrawerLayout: DrawerLayout? = null
     private var mViewPager: ViewPager? = null
+    private var toolbar: Toolbar? = null
 
     private lateinit var progressDialog: ProgressDialog
 
@@ -43,10 +47,14 @@ class MainNavigationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_navigation)
         configDialog()
         initView()
-        requestData()
+        requestDataByDefault()
     }
 
     private fun initView() {
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.elevation = 0f
+
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mTabLayout = findViewById(R.id.tab_layout)
         mViewPager = findViewById(R.id.content)
@@ -69,7 +77,30 @@ class MainNavigationActivity : AppCompatActivity() {
             mDrawerLayout!!.closeDrawer(Gravity.START)
             return@setNavigationItemSelectedListener true
         }
+
+        setUpNavigationView()
     }
+
+    private fun setUpNavigationView() {
+        val actionBarDrawerToggle = object : ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
+            override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+                when (item!!.itemId) {
+                    R.id.mn_refresh -> {
+                        requestDataByDefault()
+                    }
+
+                    R.id.mn_logout -> {
+                        LoginActivity.start(this@MainNavigationActivity)
+                    }
+                }
+                mDrawerLayout!!.closeDrawers()
+                return false
+            }
+        }
+        mDrawerLayout!!.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+    }
+
 
     private fun configDialog() {
         progressDialog = ProgressDialog(this)
@@ -77,43 +108,40 @@ class MainNavigationActivity : AppCompatActivity() {
         progressDialog.setCancelable(false)
     }
 
-    private fun requestData() {
-        fun requestDataBy(ingredients: String?, food: String?, page: Int?) {
-            val request = service.getRecipesBy(ingredients, food, page)
-            request.enqueue(object : Callback<RecipeResponse> {
+    fun requestDataBy(ingredients: String?, food: String?, page: Int?) {
+        progressDialog.show()
+        val request = service.getRecipesBy(ingredients, food, page)
+        request.enqueue(object : Callback<RecipeResponse> {
 
-                override fun onFailure(call: Call<RecipeResponse>?, t: Throwable?) {
-                    t?.printStackTrace()
-                }
+            override fun onFailure(call: Call<RecipeResponse>?, t: Throwable?) {
+                t?.printStackTrace()
+            }
 
-                override fun onResponse(call: Call<RecipeResponse>?, response: Response<RecipeResponse>?) {
-                    response?.let {
-                        if (it.code() == 200) {
-                            it.body()?.let { result ->
-                                setContent(result.results)
-                            }
-                        } else {
-                            Toast.makeText(this@MainNavigationActivity,
-                                    "An error occured code ${it.code()}", Toast.LENGTH_LONG)
-                                    .show()
+            override fun onResponse(call: Call<RecipeResponse>?, response: Response<RecipeResponse>?) {
+                response?.let {
+                    if (it.code() == 200) {
+                        it.body()?.let { result ->
+                            setContent(result.results)
                         }
+                    } else {
+                        Toast.makeText(this@MainNavigationActivity,
+                                "An error occured code ${it.code()}", Toast.LENGTH_LONG)
+                                .show()
                     }
                 }
-            })
-        }
+            }
+        })
+    }
+
+    fun requestDataByDefault() {
+        requestDataBy(null, null, null)
     }
 
     @SuppressLint("StaticFieldLeak")
     private fun setContent(recipes: MutableList<Recipe>) {
         asyncTask = object : AsyncTask<Void, Void, MutableList<FragmentModel>>() {
 
-            override fun onPreExecute() {
-                super.onPreExecute()
-                if (!progressDialog.isShowing) {
-                    progressDialog.show()
-                }
-            }
-
+            //background process
             override fun doInBackground(vararg params: Void?): MutableList<FragmentModel> {
                 val ascending = recipes.sortedBy { it.title }
                 val descending = recipes.sortedByDescending { it.title }
@@ -122,6 +150,7 @@ class MainNavigationActivity : AppCompatActivity() {
                 return mutableListOf(fm1, fm2)
             }
 
+            //finish background process, return to ui/main thread
             override fun onPostExecute(result: MutableList<FragmentModel>?) {
                 super.onPostExecute(result)
                 result?.let {

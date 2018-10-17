@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.spoonart.training.R
 import com.spoonart.training.model.data.Recipe
 import com.spoonart.training.util.DataUtil
@@ -53,19 +55,25 @@ class DetailActivity : AppCompatActivity() {
 
     fun setData() {
         recipe = intent.getParcelableExtra("parcel")
-        println("RECIPE: ${recipe!!.title}")
         recipe?.let {
             tvTitle!!.text = it.title
             tvIngredients!!.text = it.ingredients
             val url = it.thumbnail
             setTitle(it.title)
+
+            Glide.with(this)
+                    .load(it.thumbnail)
+                    .apply(RequestOptions().placeholder(R.drawable.placeholder))
+                    .into(ivThumbnail!!)
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_detail, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_detail, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

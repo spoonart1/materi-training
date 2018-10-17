@@ -21,7 +21,8 @@
         <!--<activity android:name=".feature.session_five.LoginActivity"/>-->
 
         <activity
-            android:name=".feature.session_three.ListActivity"
+            android:name=".feature.session_nine.MainNavigationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
